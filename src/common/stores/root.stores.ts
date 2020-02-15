@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree';
+import { types, Instance } from 'mobx-state-tree';
 
 const extendedStore = types.compose(
   types.model('BookShopModel', {
@@ -7,7 +7,7 @@ const extendedStore = types.compose(
   }),
   types.model('Stores', {})
 );
-const shop = extendedStore.create(
+const BookshopStore = extendedStore.create(
   {
     index: 1,
     booksList: [{ name: 'Kerem', age: '41' },{ name: 'Ahmet', age: '32' },{ name: 'Hasa', age: '28' }]
@@ -15,4 +15,5 @@ const shop = extendedStore.create(
     notification: (messages: any) => window.alert(messages)
   });
 
-export default shop;
+export type BookshopStore = Instance<typeof BookshopStore>;
+export default BookshopStore;
