@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
-import { Provider } from 'mobx-react';
 import './App.css';
-import shop from './common/stores/root.stores';
+import { BookshopProvider } from './common/hooks/useRootStore';
+import BookshopStore from './common/stores/root.stores';
 import Books from './pages/Books';
 
 
 const App: FC = () => {
   return (
     <div className="App">
-      <Provider shop={shop}>
+      <BookshopProvider value={ BookshopStore }>
         <Books />
-      </Provider>
+      </BookshopProvider>
     </div>
   );
 }
