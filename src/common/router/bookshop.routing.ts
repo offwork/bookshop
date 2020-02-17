@@ -13,4 +13,4 @@ export const bookshopRoutes: Route[] = [
     name: 'bookDetails',
     pattern: '/book-details/:id'
   },
-]
+];
