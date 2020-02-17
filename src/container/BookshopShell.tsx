@@ -11,7 +11,6 @@ const viewMap = {
   notFound: <NotFound />,
 };
 
-
 const Shell: FC = () => {
   const { bookshopRouter } = useBookshopStore();
 

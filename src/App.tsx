@@ -1,22 +1,18 @@
 import React, { FC } from 'react';
-import { HistoryAdapter } from "mobx-state-router";
-import { createBrowserHistory } from "history";
+import { MuiThemeProvider } from '@material-ui/core';
 import './App.css';
 import { BookshopProvider } from './common/hooks/useRootStore';
 import BookshopStore from './common/stores/root.stores';
 import BookshopShell from './container/BookshopShell';
-
-const history = createBrowserHistory();
-const historyAdapter = new HistoryAdapter(BookshopStore.bookshopRouter, history);
-historyAdapter.observeRouterStateChanges();
+import { getTheme } from './core/theme.config'
 
 const App: FC = () => {
   return (
-    <div className="App">
+    <MuiThemeProvider theme={getTheme()}>
       <BookshopProvider value={ BookshopStore }>
         <BookshopShell />
       </BookshopProvider>
-    </div>
+    </MuiThemeProvider>
   );
 }
 

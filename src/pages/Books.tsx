@@ -5,12 +5,17 @@ import { observer } from 'mobx-react';
 interface Props {}
 
 const Books: FC<Props> = observer(() => {
-  const { booksList } = useBookshopStore();
+  const { booksList, bookshopRouter } = useBookshopStore();
 
   return (
     <div>{booksList.map((book, index) => {
       return(
-        <div key={index}>{book.name}</div>
+        <div key={index}>
+          {book.name}
+          <button onClick={() =>
+            bookshopRouter.goTo('bookDetails', {id: book.name})
+          }>more...</button>
+        </div>
       )})}
     </div>
   )
