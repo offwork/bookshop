@@ -1,72 +1,86 @@
 import React, { FC } from 'react';
-import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import { red } from '@material-ui/core/colors';
+import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 
 
 interface BookCardProp {
-  name?: string;
-  age?: string;
-  redirectUrl?: () => void;
+  book?: any;
+  goToBack: () => void;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      display: 'flex',
+      maxWidth: 736,
     },
-    details: {
-      display: 'flex',
-      flexDirection: 'column',
+    media: {
+      height: 0,
+      paddingTop: '56.25%', // 16:9
     },
-    content: {
-      flex: '1 0 auto',
+    back: {
+      marginLeft: 'auto',
     },
-    cover: {
-      width: 128,
-    },
-    controls: {
-      display: 'flex',
-      alignItems: 'center',
-      paddingLeft: theme.spacing(1),
-      paddingBottom: theme.spacing(1),
-    },
-    playIcon: {
-      height: 38,
-      width: 38,
+    avatar: {
+      backgroundColor: red[500],
     },
   }),
 );
 
-const BookCard: FC<BookCardProp> = ({name, age, redirectUrl}) => {
+const BookCard: FC<BookCardProp> = ({book, goToBack}) => {
   const classes = useStyles();
 
   return (
     <Card className={classes.root}>
-      <div className={classes.details}>
-        <CardContent className={classes.content}>
-          <Typography component="h5" variant="h5">
-            {name}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            {age}
-          </Typography>
-        </CardContent>
-        <div className={classes.controls}>
-          <IconButton aria-label="detail" onClick={redirectUrl}>
-            <DoubleArrowIcon />
+      <CardHeader
+        avatar={
+          <Avatar aria-label="book" className={classes.avatar}>
+            {book?.volumeInfo.title[0] ? book?.volumeInfo.title[0] : 'B'}
+          </Avatar>
+        }
+        action={
+          <IconButton aria-label="settings">
+            <MoreVertIcon />
           </IconButton>
-        </div>
-      </div>
-      <CardMedia
-        className={classes.cover}
-        image="logo192.png"
-        title="Live from space album cover"
+        }
+        title={book?.volumeInfo.title}
+        subheader={book?.volumeInfo.subtitle}
       />
+      <CardMedia
+        className={classes.media}
+        image={book?.volumeInfo.imageLinks.thumbnail ? book?.volumeInfo.imageLinks.thumbnail : 'logo512.png'}
+        title="Paella dish"
+      />
+      <CardContent>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {book?.volumeInfo.description}
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <IconButton aria-label="Book decrement">
+          <IndeterminateCheckBoxIcon />
+        </IconButton>
+        <IconButton aria-label="Book increment">
+          <AddBoxIcon />
+        </IconButton>
+        <IconButton 
+          aria-label="back"
+          className={classes.back}
+          onClick={goToBack}>
+          <KeyboardBackspaceIcon />
+        </IconButton>
+      </CardActions>
     </Card>
   )
 };

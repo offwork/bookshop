@@ -21,6 +21,14 @@ export function getTheme(): Theme {
   const typography: TypographyOptions = {  };
 
   const overrides: Overrides = {
+    MuiCssBaseline : {
+      '@global': {
+        '*, *::before, *::after': {
+          transition: 'none !important',
+          animation: 'none !important',
+        }
+      }
+    },
     MuiButton: {
       root: {
         fontSize: 11,
