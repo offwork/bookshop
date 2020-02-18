@@ -1,22 +1,33 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { useBookshopStore } from '../common/hooks/useRootStore';
 import BookTileGrid from '../common/components/BookTileGrid';
 
-interface BooksProps {}
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      margin: '0 auto'
+    }
+  }),
+);
 
-const Books: FC<BooksProps> = observer(() => {
-  const { booksList, bookshopRouter } = useBookshopStore();
+const Books: FC = observer(() => {
+  const { bookStores, bookshopRouter, bookDetails } = useBookshopStore();
+  const { bookList } = bookStores;
+  const classes = useStyles();
 
-  const clickOnBook = (name: string) => {
-    bookshopRouter.goTo('bookDetails', {id: name});
+  const clickOnBook = (bookId: string) => {
+    const book = bookList.find(elm => elm.id === bookId);
+    bookDetails.selectedBook(book)
+    bookshopRouter.goTo('bookDetails', {id: bookId});
   };
 
   return (
-    <div>
+    <div className={classes.root}>
       <BookTileGrid 
-        books={booksList}
-        redirectUrl={(name) => clickOnBook(name)}
+        books={bookList}
+        redirectUrl={(id) => clickOnBook(id)}
       />
     </div>
   )

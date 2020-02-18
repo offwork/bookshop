@@ -1,46 +1,25 @@
-import { types, Instance, getEnv } from 'mobx-state-tree';
+import { Instance } from 'mobx-state-tree';
 import { RouterStore, RouterState } from 'mobx-state-router';
 import { HistoryAdapter } from "mobx-state-router";
 import { createBrowserHistory } from "history";
 import { bookshopRoutes } from '../router/bookshop.routing';
+import { Stores } from './bookshop.stores';
+import apiInstance from '../../core/api.config';
 
-
-/**
- * extendedStore stores data 
- * to be processed across the application
- */
-const extendedStore = types.compose(
-  types.model('BookShopModel', {
-    index: types.number,
-    booksList: types.array(types.model({name: types.string, age: types.string}))
-  }),
-  types.model('Stores', {
-  })
-  .views(self => ({
-    get bookshopRouter() {
-      return getEnv(self).bookshopRouter
-    },
-    get notification() {
-      return getEnv(self).notification
-    },
-  }))
-);
 
 const notFound = new RouterState("notFound");
-const bookshopRoute = new RouterStore(extendedStore, bookshopRoutes, notFound);
+const bookshopRoute = new RouterStore(Stores, bookshopRoutes, notFound);
 const history = createBrowserHistory();
 
 /**
  * BookshopStore is responsible for starting 
  * the stores and preparing the application environment
  */
-const BookshopStore = extendedStore.create(
-  { /** initialized */
-    index: 1,
-    booksList: [{ name: 'Kerem', age: '41' },{ name: 'Ahmet', age: '32' },{ name: 'Hasan', age: '28' }]
-  },
+const BookshopStore = Stores.create(
+  { /** initialized */ },
   { /** environments */
     notification: (messages: any) => window.alert(messages),
+    api: apiInstance,
     bookshopRouter: bookshopRoute
   });
 

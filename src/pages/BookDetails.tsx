@@ -1,25 +1,28 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { useBookshopStore } from '../common/hooks/useRootStore';
 import { historyAdapter } from '../common/stores/root.stores';
+import BookCard from '../common/components/BookCard';
 
-interface Props {}
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      margin: '0 auto',
+      padding: 24
+    }
+  }),
+);
 
-const BookDeails: FC<Props> = observer(() => {
-  const { bookshopRouter } = useBookshopStore();
+const BookDetails: FC = observer(() => {
+  const { bookDetails } = useBookshopStore();
+  const classes = useStyles();
 
   return (
-    <div>
-      <h2>Book Details</h2>
-      <div>
-        <span>here is book content...</span>
-        <span>{bookshopRouter.getCurrentRoute().name}</span>
-      </div>
-      <div>
-        <button onClick={() => historyAdapter.goBack()}>Back</button>
-      </div>
+    <div className={classes.root}>
+      <BookCard book={bookDetails.book} goToBack={() => historyAdapter.goBack()} />
     </div>
   )
 });
 
-export default BookDeails;
+export default BookDetails;
