@@ -1,17 +1,18 @@
 import React, { FC } from 'react';
-import { Provider } from 'mobx-react';
+import { MuiThemeProvider } from '@material-ui/core';
 import './App.css';
-import shop from './common/stores/root.stores';
-import Books from './pages/Books';
-
+import { BookshopProvider } from './common/hooks/useRootStore';
+import BookshopStore from './common/stores/root.stores';
+import BookshopShell from './common/components/container/BookshopShell';
+import { getTheme } from './core/theme.config'
 
 const App: FC = () => {
   return (
-    <div className="App">
-      <Provider shop={shop}>
-        <Books />
-      </Provider>
-    </div>
+    <MuiThemeProvider theme={getTheme()}>
+      <BookshopProvider value={ BookshopStore }>
+        <BookshopShell />
+      </BookshopProvider>
+    </MuiThemeProvider>
   );
 }
 
